@@ -1,0 +1,40 @@
+{
+  "name": "rollups-contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ganache-cli": "^6.9.1",
+    "prettier": "^2.0.5",
+    "truffle": "^5.1.27",
+    "web3-utils": "^1.2.8",
+    "zeppelin-solidity": "^1.12.0"
+  },
+  "ignore": [
+    "README.md",
+    ".gitignore"
+  ],
+  "commands": {
+    "Compile": "truffle compile",
+    "Migrate": "truffle migrate",
+    "Test contracts": "truffle test",
+    "Run dev server": "yarn run dev"
+  },
+  "hooks": {
+    "post-unpack": "yarn install"
+  },
+  "dependencies": {
+    "-": "0.0.1",
+    "soltype-pb": "^0.2.2",
+    "truffle-abi": "^1.0.3"
+  }
+}
