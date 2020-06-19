@@ -5,7 +5,14 @@ module.exports = {
         development: {
             host: "127.0.0.1",
             port: 7545,
-            network_id: "*"
+            network_id: "*",
+            gas:6283185,
+        },
+        "rinkeby": {
+            host: "192.168.1.189",
+            port: 8545,
+            from:"0x8185726EDb012D1A0A53f50c218B1Ed1bBaD7fE3",
+            network_id: "*",
         }
     },
     compilers: {

@@ -10,7 +10,9 @@ var Rollups = artifacts.require('Rollups');
 // 		Height:     10,
 // 		Timestamp:  time.Now().Unix(),
 // 	}
-let header = "0x0a20e46b55fcd8a51cfe1cd1de8eaaf6e5a9993d1e2e72b74f657f13638e3937f08a122006691b3a642e437e8d9e8afc33c44d37aed6fc1408804cc149baa62999512e161a20c6e9bc3e163dd8e600563396ed32279d729b1fb4a96345972e5fcb80d782be5b222019e376dbb4cca70f73994e2f86ae9f51b782a6da63953dfe4a1005608dd2b7ad2a209e3d0e49056d998b5007b06157f36de98c4ad14cc68dbb7ba553b8a45ea9ae3132207affdde4474baacd73cbd3437d946c841a0686171aff2bbf4b29a410b283e5e8380a40d0f8d4f605";
+let header1 = "0x0a20e46b55fcd8a51cfe1cd1de8eaaf6e5a9993d1e2e72b74f657f13638e3937f08a122006691b3a642e437e8d9e8afc33c44d37aed6fc1408804cc149baa62999512e161a20c6e9bc3e163dd8e600563396ed32279d729b1fb4a96345972e5fcb80d782be5b2220d9f829431397652fcf5ea76d7ba5ef81852962f14f6cb2faa5c523f7c2e284fc2a209e3d0e49056d998b5007b06157f36de98c4ad14cc68dbb7ba553b8a45ea9ae3132207affdde4474baacd73cbd3437d946c841a0686171aff2bbf4b29a410b283e5e8380a4084b4aef705";
+let header2 = "0x0a20e46b55fcd8a51cfe1cd1de8eaaf6e5a9993d1e2e72b74f657f13638e3937f08a122006691b3a642e437e8d9e8afc33c44d37aed6fc1408804cc149baa62999512e161a20c6e9bc3e163dd8e600563396ed32279d729b1fb4a96345972e5fcb80d782be5b2220a17058addff3b787ecd80286701db2cf51ba5512fd5f08e558de6202242aea572a209e3d0e49056d998b5007b06157f36de98c4ad14cc68dbb7ba553b8a45ea9ae3132207affdde4474baacd73cbd3437d946c841a0686171aff2bbf4b29a410b283e5e8380b4084b4aef705";
+let header3 = "0x0a20e46b55fcd8a51cfe1cd1de8eaaf6e5a9993d1e2e72b74f657f13638e3937f08a122006691b3a642e437e8d9e8afc33c44d37aed6fc1408804cc149baa62999512e161a20c6e9bc3e163dd8e600563396ed32279d729b1fb4a96345972e5fcb80d782be5b22203107a926fecad1504af197deeee3a6fe8e732309211df1efa6e09943cc4552492a209e3d0e49056d998b5007b06157f36de98c4ad14cc68dbb7ba553b8a45ea9ae3132207affdde4474baacd73cbd3437d946c841a0686171aff2bbf4b29a410b283e5e838174084b4aef705";
 
 //	receipt1 := &mockReceipt{
 // 		from:  common2.Address{},
@@ -32,7 +34,7 @@ let header = "0x0a20e46b55fcd8a51cfe1cd1de8eaaf6e5a9993d1e2e72b74f657f13638e3937
 // 		to:    account4,
 // 		value: big.NewInt(400),
 // 	}
-let rollup1 = "0x0a1400000000000000000000000000000000000000000a14331bcceb099d3a66e1921c4e434fcbef853e2b300a14d166319b7eba5da39882b2b6d17e907801a772340a144595031751b620179ffc09f6e9db7a5016b53ee40a1441e46d84c206007982f93c0874152b8cf61279851204100118641205100218c8011205100318ac0212051004189003";
+let rollup1 = "0x0a14331bcceb099d3a66e1921c4e434fcbef853e2b300a14d166319b7eba5da39882b2b6d17e907801a772340a144595031751b620179ffc09f6e9db7a5016b53ee40a1441e46d84c206007982f93c0874152b8cf6127985120d08ffffffffffffffffff011864121008ffffffffffffffffff01100118c801121008ffffffffffffffffff01100218ac02121008ffffffffffffffffff011003189003";
 //	receipt5 := &mockReceipt{
 // 		from:  account1,
 // 		to:    account2,
@@ -59,20 +61,23 @@ let rollup2 = "0x0a14331bcceb099d3a66e1921c4e434fcbef853e2b300a14d166319b7eba5da
 // 		to:    common2.Address{},
 // 		value: big.NewInt(50),
 // 	}
-let rollup3 = "0x0a14d166319b7eba5da39882b2b6d17e907801a772340a1400000000000000000000000000000000000000000a144595031751b620179ffc09f6e9db7a5016b53ee41204100118321206080210011832\n";
+let rollup3 = "0x0a14d166319b7eba5da39882b2b6d17e907801a772340a144595031751b620179ffc09f6e9db7a5016b53ee4120d10ffffffffffffffffff011832120f080110ffffffffffffffffff011832";
 
 let account1 = "0x331BcCEb099D3A66e1921C4e434FCBeF853e2B30";
 let account2 = "0xd166319B7eBa5DA39882b2B6D17E907801a77234";
 let account3 = "0x4595031751B620179FFC09f6E9DB7a5016B53ee4";
 let account4 = "0x41E46d84c206007982F93C0874152B8cF6127985";
 
+let accountAuth = "0x728d9Dd511dc5725829C578D9beA083cDfC2ceDD";
+
 contract('Rollups simple test', async (accounts) => {
     it('Restricted access test', async () => {
         let instance = await Rollups.deployed();
-        let h = Buffer.from(header.substring(2), 'hex');
+        let h = Buffer.from(header1.substring(2), 'hex');
         let r1  = Buffer.from(rollup1.substring(2), 'hex');
         //reverted()
-        await notAuthorized(instance.addBlock(h, r1, {from: account1}));
+        let actualBalance = await web3.eth.getBalance(accounts[0]);
+        await notAuthorized(instance.addBlock(h, r1, {from: accounts[0]}));
         assert.equal(true, true)
     });
 
@@ -82,10 +87,11 @@ contract('Rollups simple test', async (accounts) => {
         assert.equal(height.valueOf(), 0);
     });
 
-    it('Call AddBlock', async () => {
-        let instance = await Rollups.deployed();
+    it('Call AddBlock with same header', async () => {
+        let instance = await Rollups.new([accounts[0]])
+        //let instance = await Rollups.deployed();
 
-        let h = Buffer.from(header.substring(2), 'hex');
+        let h = Buffer.from(header1.substring(2), 'hex');
         let r1  = Buffer.from(rollup1.substring(2), 'hex');
         await instance.addBlock(h, r1);
         let height1 = await instance.getTopHeight.call();
@@ -102,9 +108,58 @@ contract('Rollups simple test', async (accounts) => {
         assert.equal(balance41.valueOf(), 400);
 
         let r2  = Buffer.from(rollup2.substring(2), 'hex');
-        await instance.addBlock(h, r2);
+        await badHeaderHeight(instance.addBlock(h, r2));
+
+
+    });
+
+    it('Call AddBlock with empty rollup', async () => {
+        let instance = await Rollups.new([accounts[0]])
+        //let instance = await Rollups.deployed();
+
+        let h = Buffer.from(header1.substring(2), 'hex');
+        await instance.addBlock(h, []);
+        let height1 = await instance.getTopHeight.call();
+        assert.equal(height1, 10);
+
+        let balance11 = await instance.getBalance.call(account1);
+        let balance21 = await instance.getBalance.call(account2);
+        let balance31 = await instance.getBalance.call(account3);
+        let balance41 = await instance.getBalance.call(account4);
+
+        assert.equal(balance11.valueOf(), 0);
+        assert.equal(balance21.valueOf(), 0);
+        assert.equal(balance31.valueOf(), 0);
+        assert.equal(balance41.valueOf(), 0);
+
+    });
+
+    it('Call AddBlock', async () => {
+        let instance = await Rollups.new([accounts[0]])
+        //let instance = await Rollups.deployed();
+
+        let h1 = Buffer.from(header1.substring(2), 'hex');
+        let h2 = Buffer.from(header2.substring(2), 'hex');
+        let h3 = Buffer.from(header3.substring(2), 'hex');
+        let r1  = Buffer.from(rollup1.substring(2), 'hex');
+        await instance.addBlock(h1, r1);
+        let height1 = await instance.getTopHeight.call();
+        assert.equal(height1, 10);
+
+        let balance11 = await instance.getBalance.call(account1);
+        let balance21 = await instance.getBalance.call(account2);
+        let balance31 = await instance.getBalance.call(account3);
+        let balance41 = await instance.getBalance.call(account4);
+
+        assert.equal(balance11.valueOf(), 100);
+        assert.equal(balance21.valueOf(), 200);
+        assert.equal(balance31.valueOf(), 300);
+        assert.equal(balance41.valueOf(), 400);
+
+        let r2  = Buffer.from(rollup2.substring(2), 'hex');
+        await instance.addBlock(h2, r2);
         let height2 = await instance.getTopHeight.call();
-        assert.equal(height2, 10);
+        assert.equal(height2, 11);
 
         let balance12 = await instance.getBalance.call(account1);
         let balance22 = await instance.getBalance.call(account2);
@@ -117,9 +172,9 @@ contract('Rollups simple test', async (accounts) => {
         assert.equal(balance42.valueOf(), 430);
 
         let r3  = Buffer.from(rollup3.substring(2), 'hex');
-        await instance.addBlock(h, r3);
+        await instance.addBlock(h3, r3);
         let height3 = await instance.getTopHeight.call();
-        assert.equal(height3, 10);
+        assert.equal(height3, 23);
 
         let balance13 = await instance.getBalance.call(account1);
         let balance23 = await instance.getBalance.call(account2);
@@ -153,4 +208,5 @@ const catchInvalidOpcode = async function(promise) {await tryCatch(promise, "inv
 const catchStackOverflow  =  async function(promise) {await tryCatch(promise, "stack overflow"     );};
 const catchStackUnderflow  = async function(promise) {await tryCatch(promise, "stack underflow"    );};
 const catchStaticStateChange = async function(promise) {await tryCatch(promise, "static state change");};
-const notAuthorized = async function(promise) {await tryCatch(promise, "revert Sender not authorized. -- Reason given: Sender not authorized..");};
+const notAuthorized = async function(promise) {await tryCatch(promise, "revert Sender not authorized -- Reason given: Sender not authorized.");};
+const badHeaderHeight = async function(promise) {await tryCatch(promise, "revert Received header lower than expected -- Reason given: Received header lower than expected.");};

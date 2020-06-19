@@ -27,31 +27,39 @@ contract Rollups {
         }
         require(
             allowed,
-            "Sender not authorized."
+            "Sender not authorized"
         );
         _;
     }
 
-    function getTopHeight() public withCommittee view returns (int32) {
+    function getTopHeight() public view returns (int32) {
         return topHeight;
     }
 
     function addBlock(bytes header, bytes rollup) public withCommittee {
         pb_BlockHeader.Data memory h = pb_BlockHeader.decode(header);
-        pb_Rollup.Data memory r = pb_Rollup.decode(rollup);
-        emit TopHeightUpdate(int32(r.transactions[0].value));
 
-        for (uint i = 0; i < r.transactions.length; i++) {
-            emit Transaction(i);
-            pb_Transaction.Data memory tran = r.transactions[i];
+        require(
+            h.height > topHeight,
+            "Received header lower than expected"
+        );
 
-            applyTransaction(tran, r.accounts);
+        if (rollup.length > 0) {
+            pb_Rollup.Data memory r = pb_Rollup.decode(rollup);
+
+            for (uint i = 0; i < r.transactions.length; i++) {
+                emit Transaction(i);
+                pb_Transaction.Data memory tran = r.transactions[i];
+
+                applyTransaction(tran, r.accounts);
+            }
         }
 
+        emit TopHeightUpdate(h.height);
         topHeight = h.height;
     }
 
-    function getBalance(address owner) public returns (int64) {
+    function getBalance(address owner) public view returns (int64) {
         return balances[owner];
     }
 

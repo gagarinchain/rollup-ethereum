@@ -100827,15 +100827,27 @@
     "version": "0.4.26+commit.4563c3fc.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x78BC8865c89f901373D319C78a1224Ecf7eD9af0",
+      "transactionHash": "0x30123fec41d7d5ede158aca6bdd0a20bf2d8482ab13166c627963b7b27b40cdc"
+    },
+    "1337": {
+      "events": {},
+      "links": {},
+      "address": "0xf6FF372d6C6F3956941989f5de88fD988B7D0412",
+      "transactionHash": "0x4dcdb2f01052aa42bb7b8a769637432b073379f2f890f6f26aa1b04d2aeaf8a2"
+    },
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x5343d764f19738a236778F635aEEBebC497Ee19F",
-      "transactionHash": "0x04b981f28af9cc950485da9cf1930c5ab779d452bd54b4f958438614fb0c9d83"
+      "address": "0xC0dF46f3e8d76442a59f118683b304A29578D37f",
+      "transactionHash": "0x6d578f094b780897eee2a8f2c83fcd92d59fad4981f5d1d8aa57b8c8cb962f41"
     }
   },
   "schemaVersion": "3.2.0",
-  "updatedAt": "2020-06-01T22:40:54.010Z",
+  "updatedAt": "2020-06-19T16:43:39.918Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

@@ -16,7 +16,7 @@ module.exports = function(deployer) {
         Rollups.link(pb_Rollup);
         return deployer.deploy(Rollups, [
             "0x728d9Dd511dc5725829C578D9beA083cDfC2ceDD",
-            "0x16C997a49A61EeA424f9bCc0c85543cC6d71799f",
-            "0x094194624493E84485a41a8F7844a73eD36dA7F4"]);
+            "0x8185726EDb012D1A0A53f50c218B1Ed1bBaD7fE3",
+            "0x4026a2512f2b37107a547fc98578f37357c4bd1c"]);
     })//*/;
 };
