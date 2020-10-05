@@ -1,21 +1,27 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.5.16;
+pragma experimental ABIEncoderV2;
 
-import './rollup_pb.sol';
+import "./Gateway.sol";
+import {DataTypes as dt} from "./DataTypes.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 contract Rollups {
-    using pb_Rollup for pb_Rollup.Data;
-
-    int32 topHeight;
-    mapping(address => int64) balances;
+    uint32 topHeight = 0;
+    uint32 blockInterval = 1;
+    mapping(address => uint256) balances;
     address[] public committee ;
+    Gateway gateway;
 
-    event BalanceChanged(address owner, int64 balance);
+    using SafeMath for uint256;
+
+    event BalanceChanged(address owner, uint256 balance);
     event Transaction(uint256 tranIndex);
     event Received(uint256 blockCount);
-    event TopHeightUpdate(int32 eight);
+    event TopHeightUpdate(uint32 height);
 
-    constructor(address[] c) public {
+    constructor(address[] memory c, address _gateway) public {
         committee = c;
+        gateway = Gateway(_gateway);
     }
 
     modifier withCommittee() {
@@ -32,24 +38,22 @@ contract Rollups {
         _;
     }
 
-    function getTopHeight() public view returns (int32) {
+    function getTopHeight() public view returns (uint32) {
         return topHeight;
     }
 
-    function addBlock(bytes header, bytes rollup) public withCommittee {
-        pb_BlockHeader.Data memory h = pb_BlockHeader.decode(header);
+    function addBlock(bytes memory header, bytes memory rollup, bytes memory signature) public withCommittee {
+        (dt.BlockHeader memory h, dt.Rollup memory r) = dt.parseAndValidate(header, rollup);
 
         require(
-            h.height > topHeight,
-            "Received header lower than expected"
+            h.height == topHeight + blockInterval,
+            "Not valid block"
         );
 
-        if (rollup.length > 0) {
-            pb_Rollup.Data memory r = pb_Rollup.decode(rollup);
-
+        if (r.transactions.length > 0) {
             for (uint i = 0; i < r.transactions.length; i++) {
                 emit Transaction(i);
-                pb_Transaction.Data memory tran = r.transactions[i];
+                dt.Transaction memory tran = r.transactions[i];
 
                 applyTransaction(tran, r.accounts);
             }
@@ -59,38 +63,54 @@ contract Rollups {
         topHeight = h.height;
     }
 
-    function getBalance(address owner) public view returns (int64) {
+    function getBalance(address owner) public view returns (uint256) {
         return balances[owner];
     }
 
-    function applyTransaction(pb_Transaction.Data memory tran, bytes[] memory accounts) private {
-        int64 value = tran.value;
-        if (tran.from >= 0) {
-            address from = bytesToAddress(accounts[uint32(tran.from)]);
-            if(balances[from] != 0) {
-                balances[from] = balances[from] - value;
-                emit BalanceChanged(from, balances[from]);
-            }
+    function applyTransaction(dt.Transaction memory tran, address[] memory accounts) private {
+        uint256 value = tran.value;
+
+        //bad transaction
+        if (tran.from == -1 && tran.to == -1) {
+            return;
         }
 
-        if (tran.to >= 0) {
-            address to = bytesToAddress(accounts[uint32(tran.to)]);
-            if(balances[to] != 0) {
-                balances[to] = balances[to] + value;
-            } else {
-                balances[to] = value;
-            }
-            emit BalanceChanged(to, balances[to]);
+        //deposit
+        if (tran.from == -1) {
+            address to = accounts[uint32(tran.to)];
+            increaseBalance(to, value);
+            gateway.confirmDeposit(to);
+            return;
         }
+
+        //redeem
+        if (tran.to == -1) {
+            address from = accounts[uint32(tran.from)];
+            decreaseBalance(from, value);
+            gateway.returnDeposit(from, value);
+            return;
+        }
+
+        if (tran.from == tran.to) { //self transaction, do nothing, otherwise we can double spend
+            return;
+        }
+
+        //we can check, if client is registered and transaction is allowed only through request to gateway,
+        //but actually we must check it through rollup plugin in Gagarin.network
+        address from = accounts[uint32(tran.from)];
+        address to = accounts[uint32(tran.to)];
+        decreaseBalance(from, value);
+        increaseBalance(to, value);
     }
 
-    function tb20(bytes memory _b) public pure returns (bytes20 _result) {
-        assembly {
-            _result := mload(add(_b, 0x20))
-        }
+    function decreaseBalance(address from, uint256 value) private {
+        balances[from] > 0;
+        balances[from] = balances[from] - value;
+        emit BalanceChanged(from, balances[from]);
     }
 
-    function bytesToAddress(bytes memory _b) public returns (address) {
-        return address(tb20(_b));
+    function increaseBalance(address to, uint256 value) private {
+        balances[to] = balances[to] + value;
+        emit BalanceChanged(to, balances[to]);
     }
 }

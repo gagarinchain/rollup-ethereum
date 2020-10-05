@@ -17,7 +17,7 @@ module.exports = {
     },
     compilers: {
         solc: {
-            version: "0.4.26" // ex:  "0.4.20". (Default: Truffle's installed solc)
+            version: "0.5.16" // ex:  "0.4.20". (Default: Truffle's installed solc)
         }
     }
 };

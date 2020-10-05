@@ -85,7 +85,7 @@ library _pb {
       return (s, sz);
     }
 
-    function _decode_uintf(uint p, bytes bs, uint sz) internal pure returns (uint, uint) {
+    function _decode_uint(uint p, bytes bs, uint sz) internal pure returns (uint, uint) {
       uint x = 0;
       assembly {
         let i := 0
