@@ -68,7 +68,7 @@ describe('Rollups simple test', () => {
         let rollups = await Rollups.new([ admin, purchaser, manager], gateway.address, { from: admin });
 
         await token.increaseAllowance(gateway.address, 200, { from: admin });
-        await gateway.register("0x57c85258f66A7b61D54b484a129E06013250C6c1", { from: admin });
+        await gateway.register(admin, "0x57c85258f66A7b61D54b484a129E06013250C6c1", { from: admin });
         await gateway.lockTokens(100, { from: admin });
         await gateway.setRollupManager(rollups.address, { from: admin });
 
@@ -91,7 +91,7 @@ describe('Rollups simple test', () => {
         let rollups = await Rollups.new([ admin, purchaser, manager], gateway.address, { from: admin });
 
         await token.increaseAllowance(gateway.address, 200, { from: admin });
-        await gateway.register("0x57c85258f66A7b61D54b484a129E06013250C6c1", { from: admin });
+        await gateway.register(admin, "0x57c85258f66A7b61D54b484a129E06013250C6c1", { from: admin });
         await gateway.lockTokens(100, { from: admin });
         await gateway.setRollupManager(rollups.address, { from: admin });
 
@@ -122,7 +122,7 @@ describe('Rollups simple test', () => {
         let rollups = await Rollups.new([ admin, purchaser, manager], gateway.address, { from: admin });
 
         await token.increaseAllowance(gateway.address, 200, { from: admin });
-        await gateway.register("0x57c85258f66A7b61D54b484a129E06013250C6c1", { from: admin });
+        await gateway.register(admin, "0x57c85258f66A7b61D54b484a129E06013250C6c1", { from: admin });
         await gateway.lockTokens(100, { from: admin });
         await gateway.setRollupManager(rollups.address, { from: admin });
 
@@ -143,10 +143,10 @@ describe('Rollups simple test', () => {
 
         await token.increaseAllowance(gateway.address, 100, { from: acc0 });
         await token.increaseAllowance(gateway.address, 200, { from: acc2 });
-        await gateway.register("0xDd9811Cfc24aB8d56036A8ecA90C7B8C75e35950", { from: acc0 });
-        await gateway.register("0xf3AA514423aE2c6f66497D69f2fc899f0ad25b00", { from: acc1 });
-        await gateway.register("0x41E46d84c206007982F93C0874152B8cF6127985", { from: acc2 });
-        await gateway.register("0x95AC9774Cf32AdB66f76726502Fc0C223bCE13e2", { from: acc3 });
+        await gateway.register(acc0, "0xDd9811Cfc24aB8d56036A8ecA90C7B8C75e35950", { from: admin });
+        await gateway.register(acc1, "0xf3AA514423aE2c6f66497D69f2fc899f0ad25b00", { from: admin });
+        await gateway.register(acc2, "0x41E46d84c206007982F93C0874152B8cF6127985", { from: admin });
+        await gateway.register(acc3, "0x95AC9774Cf32AdB66f76726502Fc0C223bCE13e2", { from: admin });
 
         await gateway.lockTokens(100, { from: acc0 });
         await gateway.lockTokens(200, { from: acc2 });
@@ -196,10 +196,10 @@ describe('Rollups simple test', () => {
 
         await token.increaseAllowance(gateway.address, 100, { from: acc0 });
         await token.increaseAllowance(gateway.address, 200, { from: acc2 });
-        await gateway.register("0xDd9811Cfc24aB8d56036A8ecA90C7B8C75e35950", { from: acc0 });
-        await gateway.register("0xf3AA514423aE2c6f66497D69f2fc899f0ad25b00", { from: acc1 });
-        await gateway.register("0x41E46d84c206007982F93C0874152B8cF6127985", { from: acc2 });
-        await gateway.register("0x95AC9774Cf32AdB66f76726502Fc0C223bCE13e2", { from: acc3 });
+        await gateway.register(acc0, "0xDd9811Cfc24aB8d56036A8ecA90C7B8C75e35950", { from: admin });
+        await gateway.register(acc1, "0xf3AA514423aE2c6f66497D69f2fc899f0ad25b00", { from: admin });
+        await gateway.register(acc2, "0x41E46d84c206007982F93C0874152B8cF6127985", { from: admin });
+        await gateway.register(acc3, "0x95AC9774Cf32AdB66f76726502Fc0C223bCE13e2", { from: admin });
 
         await gateway.lockTokens(100, { from: acc0 });
         await gateway.lockTokens(200, { from: acc2 });
@@ -411,6 +411,7 @@ let header4_3 = "0x020000004be9354a749658237c652d69269007ac600aa2f8615359e9e8fc1
  */
 let rollup4_4 = "0x080000005800000041e46d84c206007982f93c0874152b8cf6127985dd9811cfc24ab8d56036a8eca90c7b8c75e35950f3aa514423ae2c6f66497d69f2fc899f0ad25b0095ac9774cf32adb66f76726502fc0c223bce13e2010000000200000005000000000000000100000003000000040000000000000000000000010000000d000000000000000200000000000000080000000000000000000000020000001000000000000000";
 let header4_4 = "0x03000000f8b76d89d9f6d1b4ac738655ce6cb805a4330bc672120013ecbc00d9d98d47a19e3d0e49056d998b5007b06157f36de98c4ad14cc68dbb7ba553b8a45ea9ae310000000000000000000000000000000000000000000000000000000000000000a614734684e067c14bcb2b8a9d2de85e347177a8d9c1765d4751b8d22851dd50c6e9bc3e163dd8e600563396ed32279d729b1fb4a96345972e5fcb80d782be5ba55a81100e8391212d2f22fc6b84b36b5d02588c2a96c4db616268d8abe389b8903d785f00000000";
+//let header4_4 = "0x01000000f5435028e33554fb2039b27eed98d2ed918ec528d9876928338f159716e19d45c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a4700000000000000000000000000000000000000000000000000000000000000000c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470e890f3815804618a4a18508208e77e4cc013309c7ed9f5bf63a17069562e6f5d4247e42484ae8910e5b16942b1802e337a01c8e18a80e7826e37eff9712995100020b44572f84116";
 
 
 
